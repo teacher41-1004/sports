@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPORTS!</title>
+<style>
+:root{--sage:#7d9471;--sage-d:#4a5d3f;--sage-l:#eef3ea;--ok:#2e8b57;--okl:#e3f4ea;--bad:#c0392b;--badl:#fbe7e4;--fs:clamp(13px,1.3vw,17px);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:#fff;color:var(--sage-d);font-family:Georgia,"Times New Roman",serif}
+button{font:inherit;color:inherit;cursor:pointer}
+#app{height:100%;display:flex;flex-direction:column}
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:10px 20px;border-bottom:2px solid var(--sage)}
+header .l{font-weight:bold}
+header h1{margin:0;font-size:clamp(16px,2vw,24px);color:var(--sage)}
+header .r{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap}
+.sw{display:flex;align-items:center;gap:6px;border:1px solid var(--sage);border-radius:8px;padding:3px 8px}
+.sw b{font-variant-numeric:tabular-nums;min-width:48px;text-align:center}
+.sw button,.nav button,.act button{border:1.5px solid var(--sage);background:#fff;border-radius:8px;padding:4px 10px}
+.sw button:hover,.nav button:hover:not(:disabled),.act button:hover:not(:disabled){background:var(--sage-l)}
+.score{font-weight:bold;background:var(--sage-l);border-radius:8px;padding:5px 10px}
+.bar{height:5px;background:var(--sage-l)}.bar i{display:block;height:100%;background:var(--sage);transition:width .3s}
+main{flex:1;min-height:0;display:grid;grid-template-columns:2fr 1fr;gap:16px;padding:16px 20px}
+.panel{min-height:0;border:1.5px solid var(--sage);border-radius:12px;padding:14px 18px;font-size:var(--fs);line-height:1.6}
+#read{overflow-y:auto}
+#read h3{margin:12px 0 2px;font-size:1em;letter-spacing:.04em;color:var(--sage)}
+#read h3:first-child{margin-top:0}
+.gear{display:flex;justify-content:space-around;gap:6px;font-size:1.8em;background:var(--sage-l);border:1.5px dashed var(--sage);border-radius:10px;padding:6px 4px}
+.gear span{text-align:center;line-height:1.1}.gear small{display:block;font-size:.4em;font-family:Georgia,serif;font-weight:bold;letter-spacing:.05em;color:var(--sage-d)}
+#read p{margin:0}
+#read img{display:block;max-width:100%;margin-top:16px;border-radius:8px}
+mark{background:#d9e6c3;border-bottom:2px solid var(--sage);padding:0 2px;border-radius:3px}
+#side{display:flex;flex-direction:column;overflow-y:auto;gap:12px}
+.inst{font-size:1em;letter-spacing:.04em;font-weight:bold;line-height:1.35;color:var(--sage)}
+.stmt{font-weight:bold}
+.tag{display:inline-block;font-size:.8em;background:var(--sage-l);border:1px dashed var(--sage);border-radius:6px;padding:2px 8px}
+.opts{display:flex;gap:12px}
+.opt{flex:1;font-size:1.9em;line-height:1;padding:14px 0;border:2px solid var(--sage);border-radius:12px;background:#fff}
+.opt:hover:not(:disabled){background:var(--sage-l)}
+.opt.sel{background:var(--sage);color:#fff}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt.miss{border:3px dashed var(--ok);color:var(--ok);background:var(--okl)}
+.opt:disabled{cursor:default}
+.act{display:flex;gap:10px;margin-top:auto}
+.act button{flex:1;padding:9px}
+#chk{background:var(--sage);color:#fff}
+#chk:disabled{opacity:.4;cursor:not-allowed}
+.fb{font-weight:bold;min-height:1.4em}
+footer.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 20px 12px}
+.nav button{padding:7px 18px}.nav button:disabled{opacity:.4;cursor:not-allowed}
+#end{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px}
+#end h2{font-size:clamp(24px,4vw,40px);margin:0;color:var(--sage)}
+#end .big{font-size:clamp(36px,7vw,72px);font-weight:bold}
+#end button{background:var(--sage);color:#fff;border:0;border-radius:10px;padding:12px 28px;font-size:1.1em}
+@media (max-width:760px){main{grid-template-columns:1fr;grid-template-rows:1.2fr 1fr;gap:10px;padding:10px}header{grid-template-columns:1fr;text-align:center;gap:4px}header .r,header .l{justify-content:center}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="l" id="slideNo"></div>
+  <h1>SPORTS!</h1>
+  <div class="r">
+    <div class="sw"><button id="sStart">Start</button><button id="sPause">Pause</button><b id="time">00:00</b></div>
+    <div class="score" id="score"></div>
+  </div>
+</header>
+<div class="bar"><i id="prog"></i></div>
+<main id="game">
+  <section class="panel" id="read"></section>
+  <section class="panel" id="side"></section>
+</main>
+<div id="end"></div>
+<footer class="nav" id="nav">
+  <button id="prev">← Previous</button>
+  <span id="dots"></span>
+  <button id="next">Next →</button>
+</footer>
+</div>
+<script>
+const IMG = null; // optional: data-URI/graphic placed under the reading text
+const TEXTS = [
+ ["🚲 Text 1: CYCLEBALL","This sport is like football on bikes. There are two teams. Each team has usually got two players. The bikes don’t have any brakes to stop them. Players in each team try to hit the ball into the goal. They can use their bike or their heads to do this. The ball is quite heavy — it weighs half a kilogram. The winning team is the team with the most goals at the end of the game."],
+ ["🏏 Text 2: GILLI-DANDA","This is an ancient sport from India. The players use two things: one long stick, called a danda, and a short egg-shaped bat, called a gilli. There are two teams. One player puts the gilli on the ground inside a small circle and hits it into the air with the danda. Then the player hits the gilli again and runs to touch a spot outside the circle to get a point."],
+ ["🤿 Text 3: OCTOPUSH","The sport is also called underwater hockey. There are two teams. Each team has got six players. Players swim underwater to play this game. They use small sticks and a puck. The puck is a little like a flat ball. It’s heavy and weighs about a kilogram. Players try to push the puck along the bottom of a swimming pool into the other team’s goal. The winning team is the team with the most goals at the end of the match."]
+];
+const Q = [
+ {s:"There are always two players in a cycleball team.",a:false,ev:"Each team has usually got two players."},
+ {s:"The ball in cycleball is small and light.",a:false,ev:"The ball is quite heavy — it weighs half a kilogram."},
+ {s:"Players in cycleball can’t hit the ball with their hands.",a:true,inf:true,ev:"They can use their bike or their heads to do this."},
+ {s:"Gilli-danda comes from India.",a:true,ev:"This is an ancient sport from India."},
+ {s:"The stick and the bat in gilli-danda are the same size.",a:false,ev:"one long stick, called a danda, and a short egg-shaped bat, called a gilli"},
+ {s:"Players use a small ball in gilli-danda.",a:false,inf:true,ev:"The players use two things: one long stick, called a danda, and a short egg-shaped bat, called a gilli."},
+ {s:"People play octopush in teams.",a:true,ev:"There are two teams. Each team has got six players."},
+ {s:"Players in octopush swim underwater to play their game.",a:true,ev:"Players swim underwater to play this game."},
+ {s:"Players in octopush hit the ball, or puck, with their hands.",a:false,inf:true,ev:"They use small sticks and a puck."},
+ {s:"Players in octopush can score goals without moving the puck into the other team’s goal.",a:false,ev:"Players try to push the puck along the bottom of a swimming pool into the other team’s goal."}
+];
+const N=Q.length, $=id=>document.getElementById(id);
+let i=0, st, secs=0, timer=null;
+const reset=()=>{st=Q.map(()=>({sel:null,chk:false,shown:false}));i=0;secs=0;stop();tick();$('end').style.display='none';$('game').style.display='grid';$('nav').style.display='flex';render()};
+const score=()=>st.filter((x,k)=>x.chk&&x.sel===Q[k].a).length;
+function tick(){const m=String(Math.floor(secs/60)).padStart(2,'0'),s=String(secs%60).padStart(2,'0');$('time').textContent=m+':'+s}
+function start(){if(!timer)timer=setInterval(()=>{secs++;tick()},1000)}
+function stop(){clearInterval(timer);timer=null}
+$('sStart').onclick=start;$('sPause').onclick=stop;
+
+function render(){
+  const q=Q[i],s=st[i],locked=s.chk||s.shown;
+  $('slideNo').textContent=`Slide ${i+1} of ${N}`;
+  $('score').textContent=`Score: ${score()}/${N}`;
+  $('prog').style.width=((i+1)/N*100)+'%';
+  let h='';
+  TEXTS.forEach(([t,b])=>{
+    if(s.shown&&b.includes(q.ev)) b=b.replace(q.ev,'<mark>'+q.ev+'</mark>');
+    h+=`<h3>${t}</h3><p>${b}</p>`;
+  });
+  if(IMG) h+=`<img src="${IMG}" alt="">`;
+  $('read').innerHTML=h;
+  const cls=v=>{
+    let c='opt';
+    if(s.chk){ if(s.sel===v) c+=(v===q.a?' ok':' bad'); else if(v===q.a) c+=' miss'; }
+    else if(s.shown){ if(v===q.a) c+=' ok'; }
+    else if(s.sel===v) c+=' sel';
+    return c;
+  };
+  $('side').innerHTML=`
+   <div class="inst">Read the three texts again. Are the sentences right (✓) or wrong (✗)?</div>
+   <div class="stmt">${i+1}. ${q.s}</div>
+   ${s.shown&&q.inf?'<div><span class="tag">Inferred answer (evaluation / inference)</span></div>':''}
+   <div class="opts">
+     <button class="${cls(true)}" data-v="1" ${locked?'disabled':''} aria-label="Right">✓</button>
+     <button class="${cls(false)}" data-v="0" ${locked?'disabled':''} aria-label="Wrong">✗</button>
+   </div>
+   <div class="fb" style="color:${s.chk&&s.sel===q.a?'var(--ok)':'var(--bad)'}">${s.chk?(s.sel===q.a?'Correct!':'Not quite.'):''}</div>
+   <div class="act">
+     <button id="chk" ${(s.sel===null||locked)?'disabled':''}>Check Answers</button>
+     <button id="show">Show Answer</button>
+   </div>`;
+  $('side').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{s.sel=b.dataset.v==='1';render()});
+  $('chk').onclick=()=>{s.chk=true;render()};
+  $('show').onclick=()=>{s.shown=true;render();const m=document.querySelector('#read mark');if(m)m.scrollIntoView({block:'center',behavior:'smooth'})};
+  $('prev').disabled=i===0;
+  $('next').textContent=i===N-1?'Finish ✓':'Next →';
+  $('dots').textContent=st.filter(x=>x.chk||x.shown).length+' / '+N+' done';
+}
+$('prev').onclick=()=>{if(i>0){i--;render()}};
+$('next').onclick=()=>{if(i<N-1){i++;render();$('read').scrollTop=0}else finish()};
+function finish(){
+  stop();
+  $('game').style.display='none';$('nav').style.display='none';
+  const sc=score();
+  $('end').style.display='flex';
+  $('end').innerHTML=`<h2>Game Complete!</h2><div class="big">${sc} / ${N}</div><div>Time: ${$('time').textContent}</div><div>${sc===N?'Perfect score! 🎉':sc>=N*0.7?'Great job!':'Keep practicing — you can do it!'}</div><button id="again">Play Again</button>`;
+  $('score').textContent=`Score: ${sc}/${N}`;
+  $('again').onclick=reset;
+}
+reset();
+</script>
+</body>
+</html>
